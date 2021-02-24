@@ -1,19 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="utf-8">
   <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <title>Check Password Page</title>
-  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
   <meta name="robots" content="noindex, nofollow">
   <meta name="googlebot" content="noindex, nofollow">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script
-    type="text/javascript"
-    src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"
-    
-  ></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   
-  <style id="compiled-css" type="text/css">
+  <style type="text/css">
       body {
         background: #ffffff;
         padding: 20px;
@@ -51,36 +47,64 @@
         background: #fff;
         color: #000;
       }
+      
+      #output {
+        color:red;
+      }
 
     /* EOS */
   </style>
   
     <script type="text/javascript">//<![CDATA[
-
-    // handle click and add class
-    $("#checkButton").on("click", () => {
-      var myRootUrl = $(this).data('RootUrl');
-      var myEndUrlPrefix = $(this).data('EndUrlPrefix');
-      var myPassword = $("#password").val();
-      var myUrl = myRootUrl + myPassword + myEndUrlPrefix;
-
-      if (myPassword != "") {
-        $.ajax({
-          url: myUrl,
-          type: 'HEAD',
-          error: function() {
-            $("#output").text("Password is not correct");
-          },
-          success: function() {
+    $(document).ready(function() {
+      // handle click and add class
+      $("#checkButton").on("click", () => {
+        var myRootUrl = "";
+        var myFolderUrl = "password/";
+        var myEndUrlPrefix = ".htm";
+        var myPassword = $("#password").val();
+        var myUrl = myRootUrl + myFolderUrl + myPassword + myEndUrlPrefix;
+  
+        if (myPassword != "") {
+          if (checkFileExist(myUrl))
             window.location.href = myUrl;
-          }
-        });
-      } else {
-        $("#output").text("please enter the password");
-      }
+          else
+            $("#output").text("password is not correct");
+        } else {
+          $("#output").text("please enter the password");
+        }
 
-    })
-
+      });
+      
+      function checkFileExist(url) { 
+        var http = new XMLHttpRequest(); 
+        if (url.length === 0) { 
+            return false;
+        } else { 
+            http.open('HEAD', url, false); 
+            http.send(); 
+            if (http.status === 200) { 
+                return true;
+            } else { 
+                return false;
+            } 
+        } 
+      } 
+      
+      function checkFileExist2(url) { 
+          $.ajax({
+            url: myUrl,
+            type: 'HEAD',
+            error: function() {
+              return false;
+            },
+            success: function() {
+              return true;
+            }
+          });
+        } 
+      
+    });
 
 
   //]]></script>
@@ -94,8 +118,8 @@
 <div>
   <form id="form1">
     <input type="password" id="password"/>
-    <input type="button" id="checkButton" class="submit" value="Check Password" data-RootUrl="folder/" data-EndUrlPrefix=".htm" />
-    <p id="output" color="red"></p> 
+    <input type="button" id="checkButton" class="submit" value="Check Password" />
+    <span  id="output" color="red"></p> 
   </form>
 </div>
 
