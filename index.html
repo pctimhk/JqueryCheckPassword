@@ -1,1 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title>Check Password Page</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="googlebot" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script
+    type="text/javascript"
+    src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"
+    
+  ></script>
+  
+    <script type="text/javascript">//<![CDATA[
 
+
+    // find elements
+    var banner = $("#banner-message")
+    var button = $("button")
+
+    // handle click and add class
+    $("#checkButton").on("click", () => {
+      var myRootUrl = $(this).data('RootUrl');
+      var myEndUrlPrefix = $(this).data('EndUrlPrefix');
+      var myPassword = $("#password").val();
+      var myUrl = myRootUrl + myPassword + myEndUrlPrefix;
+
+      if (myPassword != "") {
+        $.ajax({
+          url: myUrl,
+          type: 'HEAD',
+          error: function() {
+            $("#output").text("Password is not correct");
+          },
+          success: function() {
+            window.location.href = myUrl;
+          }
+        });
+      } else {
+        $("#output").text("please enter the password");
+      }
+
+    })
+
+
+
+  //]]></script>
+
+
+    <link rel="stylesheet" type="text/css" href="/css/result-light.css">
+</head>
+<body>
+  
+<div>
+  <p>Password Checking</p>
+</div>
+<div>
+  <form id="form1">
+    <input type="password" id="password"/>
+    <input type="button" id="checkButton" class="submit" value="Check Password" data-RootUrl="folder/" data-EndUrlPrefix=".htm" />
+    <p id="output" color="red"></p> 
+  </form>
+</div>
+
+</body>
+</html>
